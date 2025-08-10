@@ -28,7 +28,7 @@ def send_telegram_message(text):
 
 def scan_port(host, port, timeout=1):
     try:
-        with socket.socket() as s:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.settimeout(timeout)
             return s.connect_ex((host, port)) == 0
     except Exception:
@@ -42,55 +42,31 @@ def load_state():
         return {}
 
 def save_state(state):
-    with open(STATE_FILE, "w") as f:
-        json.dump(state, f, indent=2)
+    try:
+        with open(STATE_FILE, "w") as f:
+            json.dump(state, f, indent=2)
+    except Exception as e:
+        print(f"[!] Failed to save state: {e}")
 
 def parse_ports(ports_str):
     ports = []
     for part in ports_str.split(","):
+        part = part.strip()
         if "-" in part:
-            start, end = map(int, part.split("-"))
-            ports.extend(range(start, end + 1))
+            try:
+                start, end = map(int, part.split("-"))
+                if start > end:
+                    start, end = end, start
+                ports.extend(range(start, end + 1))
+            except ValueError:
+                print(f"[!] Invalid port range: {part}")
         else:
-            ports.append(int(part))
+            try:
+                ports.append(int(part))
+            except ValueError:
+                print(f"[!] Invalid port: {part}")
     return ports
 
 def main():
     print("=== Port Change Watcher ===")
-    host = input("Enter target host (IP or domain): ").strip()
-    ports_str = input("Enter ports to scan (e.g. 22,80,443 or 1-1024): ").strip()
-    interval_str = input("Enter scan interval in seconds (default 60): ").strip()
-    interval = int(interval_str) if interval_str.isdigit() else 60
-
-    ports = parse_ports(ports_str)
-    print(f"Monitoring {host} ports: {ports}")
-    print(f"Scan interval: {interval} seconds")
-
-    state = load_state()
-    prev_open = state.get(host, [])
-
-    while True:
-        open_ports = []
-        for p in ports:
-            if scan_port(host, p):
-                open_ports.append(p)
-
-        new_ports = [p for p in open_ports if p not in prev_open]
-        closed_ports = [p for p in prev_open if p not in open_ports]
-
-        if new_ports or closed_ports:
-            msg = f"Port changes on {host}:\n"
-            if new_ports:
-                msg += f"New open ports: {new_ports}\n"
-            if closed_ports:
-                msg += f"Closed ports: {closed_ports}\n"
-            print(msg)
-            send_telegram_message(msg)
-            prev_open = open_ports
-            state[host] = prev_open
-            save_state(state)
-
-        time.sleep(interval)
-
-if __name__ == "__main__":
-    main()
+    host =
