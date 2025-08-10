@@ -111,4 +111,9 @@ def main():
         time.sleep(args.interval) 
 
 if __name__ == "__main__":
-    main() 
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nПрограмма остановлена пользователем.")
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
