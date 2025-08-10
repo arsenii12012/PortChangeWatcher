@@ -15,6 +15,7 @@ import json
 import time
 import requests
 import signal
+import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Configuration - should be moved to config file or environment variables
@@ -55,7 +56,7 @@ def save_state(file_path, state):
     try:
         temp_file = file_path + ".tmp"
         with open(temp_file, "w") as f:
-            json.dump(state, f, indent=2)
+            json.dump(state, f, indent=2, ensure_ascii=False)
         os.replace(temp_file, file_path)
     except Exception as e:
         print(f"[!] Failed to save state: {e}")
@@ -66,12 +67,14 @@ def send_telegram_message(token, chat_id, text):
     try:
         response = requests.post(
             url,
-            data={"chat_id": chat_id, "text": text},
+            json={"chat_id": chat_id, "text": text},
             timeout=10
         )
         response.raise_for_status()
+        return True
     except requests.exceptions.RequestException as e:
         print(f"[!] Telegram API error: {e}")
+        return False
 
 def scan_host(host, ports):
     """Scan multiple ports in parallel with improved error handling."""
@@ -96,12 +99,17 @@ def parse_ports(port_spec):
         if "-" in part:
             try:
                 start, end = map(int, part.split("-"))
+                if start > end or start < 1 or end > 65535:
+                    raise ValueError
                 ports.update(range(start, end + 1))
             except ValueError:
                 print(f"[!] Invalid port range: {part}")
         else:
             try:
-                ports.add(int(part))
+                port = int(part)
+                if port < 1 or port > 65535:
+                    raise ValueError
+                ports.add(port)
             except ValueError:
                 print(f"[!] Invalid port number: {part}")
     return sorted(ports)
@@ -160,7 +168,13 @@ def main():
                 if closed_ports:
                     msg += f"  [-] Closed ports: {sorted(closed_ports)}\n"
                 print(msg.strip())
-                send_telegram_message(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
+                
+                # Try to send Telegram message up to 3 times
+                for attempt in range(3):
+                    if send_telegram_message(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg):
+                        break
+                    if attempt < 2:
+                        time.sleep(5)
 
                 prev_state[args.host] = open_ports
                 save_state(args.state_file, prev_state)
