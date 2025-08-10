@@ -30,7 +30,7 @@ TELEGRAM_BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"
 TELEGRAM_CHAT_ID = "YOUR_CHAT_ID_HERE" 
 
 4.INSTALLATION🚀
- wget https://raw.githubusercontent.com/arsenii12012/PortChangeWatcher/refs/heads/main/port_change_watcher.py
+wget https://raw.githubusercontent.com/arsenii12012/PortChangeWatcher/refs/heads/main/port_change_watcher.py
 
 5. Install Required Python Package:
  Make sure you have Python 3 installed, then install the requests library:
