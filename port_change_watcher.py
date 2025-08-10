@@ -1,9 +1,9 @@
-Port Change Watcher
+ #Port Change Watcher
 -------------------
-Monitors open ports on a target host and sends notifications via your own Telegram bot.
+#Monitors open ports on a target host and sends notifications via your own Telegram bot. 
 
-Author: Arsenii12012
-License: MIT
+#Author: Arsenii12012
+#License: MIT
 
 
 import socket
