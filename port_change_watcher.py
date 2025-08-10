@@ -108,7 +108,7 @@ def main():
             prev_state[args.host] = open_ports
             save_state(args.state_file, prev_state)
 
-        time.sleep(args.interval)
+        time.sleep(args.interval) 
 
 if __name__ == "__main__":
-    main()
+    main() 
