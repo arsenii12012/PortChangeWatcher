@@ -43,7 +43,9 @@ pip install requests
 
 📌 Usage
 Scan example.com ports 22, 80, 443 every 60 seconds:
+
 python3 port_change_watcher.py example.com --ports 22,80,443 --interval 60
 
 Scan ports 1-1024 with Telegram notifications (token and chat ID are set inside the script):
+
 python3 port_change_watcher.py example.com --ports 1-1024 --interval 60
