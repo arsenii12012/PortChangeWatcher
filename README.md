@@ -62,3 +62,6 @@ python3 port_change_watcher.py example.com --ports 1-1024 --interval 60
 FOR WINDOWS CHANGE python3 to python
 
 python port_change_watcher.py example.com --ports 1-1024 --interval 60
+❤️ Support Me
+ETH address : 0xdfC5DcF6c5D714904A55c10A31C5Eb26Bca6943B
+THANKS!!!
