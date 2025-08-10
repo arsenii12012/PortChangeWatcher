@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 #Port Change Watcher
--------------------
+#-------------------
 #Monitors a target host for new open ports and sends alerts to Telegram.
 
 #Author: Arsenii12012
