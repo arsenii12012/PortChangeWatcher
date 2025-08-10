@@ -57,6 +57,6 @@ Scan ports 1-1024 with Telegram notifications (token and chat ID are set inside 
 
 python3 port_change_watcher.py example.com --ports 1-1024 --interval 60
 
-FOR WINDOWS CHABGE python3 to python
+FOR WINDOWS CHANGE python3 to python
 
 python port_change_watcher.py example.com --ports 1-1024 --interval 60
