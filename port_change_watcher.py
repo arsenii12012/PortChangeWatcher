@@ -69,4 +69,4 @@ def parse_ports(ports_str):
 
 def main():
     print("=== Port Change Watcher ===")
-    host =
+
