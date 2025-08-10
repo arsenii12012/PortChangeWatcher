@@ -40,7 +40,9 @@ pip install requests
 6. Run the Script
 
    python3 port_change_watcher.py
+   
 !!!!!!!!!!AWARNING!!!!!!!!!!!!!!!!!!!!!!!!!!🚨
+
 EVERY NEW SCAN PLEASE DELETE THE port_state.json
 
 rm port_state.json
