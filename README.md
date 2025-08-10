@@ -25,6 +25,8 @@ Port Change Watcher is a Python script that scans open ports on a target host an
 
 Open `port_change_watcher.py` in a text editor and replace these lines:
 
+nano port_change_watcher.py
+
   port_change_watcher.py:
 TELEGRAM_BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"
 TELEGRAM_CHAT_ID = "YOUR_CHAT_ID_HERE" 
